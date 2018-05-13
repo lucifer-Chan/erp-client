@@ -25,17 +25,17 @@ module.exports = {
     },
     dev: {
         env: require('./dev.env'),
-        port: 8081,
+        port: 8089,
         autoOpenBrowser: true,
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         staticPath: '/static/',
         proxyTable: {
             '/api': {
-                target: 'http://192.168.1.1:9999',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 cookieDomainRewrite: {
-                    'localhost:8080':'http://192.168.1.1:9999'
+                    'localhost:8080':'http://localhost:8080'
                 },
                 pathRewrite:{
                     '^/api':''

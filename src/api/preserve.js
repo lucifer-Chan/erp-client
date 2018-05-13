@@ -41,6 +41,15 @@ export default {
         });
     },
 
+    /* 获取权限信息 */
+    login(data) {
+        return fetch({
+            url: '/login',
+            method: 'post',
+            params: data
+        });
+    },
+
     /* 上传Excel */
     batchUpload() {
         return fetch({

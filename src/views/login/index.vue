@@ -6,7 +6,7 @@
             <h3 class="title">系统登录</h3>
             <el-form-item prop="email">
                 <span class="svg-container"><icon-svg icon-class="jiedianyoujian"></icon-svg></span>
-                <el-input name="userName" type="text" v-model="loginForm.userName" autoComplete="on"
+                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on"
                           placeholder="用户名"></el-input>
             </el-form-item>
             <el-form-item prop="password">
@@ -48,19 +48,19 @@
                 }
             };
             const validatePass = (rule, value, callback) => {
-                if (value.length < 6) {
-                    callback(new Error('密码不能小于6位'));
+                if (value.length < 3) {
+                    callback(new Error('密码不能小于3位'));
                 } else {
                     callback();
                 }
             };
             return {
                 loginForm: {
-                    userName: 'lxx',
+                    username: 'lxx',
                     password: '123456'
                 },
                 loginRules: {
-                    userName: [
+                    username: [
                         {required: true, trigger: 'blur', validator: validateEmail}
                     ],
                     password: [
@@ -76,15 +76,18 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true;
-                        this.$store.dispatch('Login', this.loginForm).then(res => {
-                            console.log('登录接口成功', res)
+                        console.log(this.$refs.loginForm);
+                        const loginData = this.loginForm;
+                        console.log("qqqqq,",loginData);
+                        this.$store.dispatch('Login', loginData).then(res => {
+                            console.log('登录接口成功', res);
                             const roles = res.data.roleList;
                             this.$store.dispatch('GenerateRoutes', {roles}).then(() => { // 生成可访问的路由表
                                 this.$router.addRoutes(this.$store.getters.addRouters) // 动态添加可访问路由表
                                 console.log('登录后跳转到首页')
                                 this.loading = false;
                                 this.$router.push({path: '/'});
-                                // this.showDialog = true;
+                                this.showDialog = true;
                             })
 
 //              console.log('登录后跳转到首页')
@@ -92,7 +95,8 @@
 //              this.$router.push({ path: '/' });
 //                // this.showDialog = true;
                         }).catch(err => {
-                            this.$message.error(err.info);
+                            console.log(err);
+                            this.$message.error(err.errmsg);
                             this.loading = false;
                         });
                     } else {

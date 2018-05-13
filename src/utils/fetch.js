@@ -18,6 +18,7 @@ service.interceptors.request.use(config => {
     // if (store.getters.token) {
     //     config.headers['X-Token'] = store.getters.token; // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
     // }
+    console.log(config);
     return config;
 }, error => {
     // Do something with request error
@@ -29,15 +30,18 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
     response => {
         console.log(222);
-        // console.log(response)
+        console.log(response)
         if (response.data && response.data.success) {
-            // console.log(response)
+            console.log(response)
             return response.data;
-        }
-        else if(response.data &&response.data.code === 0){
-            return response.data;
-        }
-        else {
+        }else if(response.data && !response.data.success){
+            Message({
+                message: response.data.errmsg,
+                type: 'error',
+                duration: 5 * 1000
+            });
+            return Promise.reject(response.data);
+        }else {
             Message({
                 message: response.data.info,
                 type: 'error',

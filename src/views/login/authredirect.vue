@@ -3,7 +3,7 @@
       name: 'authredirect',
       created() {
         const hash = window.location.search.slice(1);
-        window.opener.location.href = window.location.origin + '/login#' + hash;
+        window.opener.location.href = '/login#' + hash;
         window.close();
       }
     }

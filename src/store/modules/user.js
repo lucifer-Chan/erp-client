@@ -29,17 +29,34 @@ const user = {
     },
 
     actions: {
-        Login({ commit, data}) {
+        Login({commit},data) {
+            console.log(data);
             return new Promise((resolve, reject) => {
-                let response ={
-                    data :{
-                        name:'admin',
-                        permissionList:'SUPER_ADMIN',
-                        roleList:'waitTrial'
-                    },
-                }
-                commit('SET_USER_INFO', response.data);
-                resolve(response);
+                // let response ={
+                //     data :{
+                //         name:'admin',
+                //         permissionList:'SUPER_ADMIN',
+                //         roleList:'waitTrial'
+                //     },
+                // }
+                Api.login(data).then(response => {
+                    // console.log(commit);
+                    console.log(data);
+                    console.log(1111111);
+                    console.log(response);
+                    if (!response.success) {
+                        console.log(2222);
+                        reject(response);
+                    } else {
+                        const data = response;
+                        console.log(data)
+                        resolve(response);
+                    }
+                }).catch(error => {
+                    console.log(error)
+                    
+                    reject(error);
+                });
             });
         },
 
