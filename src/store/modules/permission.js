@@ -48,6 +48,8 @@ const permission = {
     },
     mutations: {
         SET_ROUTERS: (state, routers,) => {
+            console.log('state',state);
+            console.log('routers',routers);
             state.addRouters = routers;
             state.routers = constantRouterMap.concat(routers);
         },
@@ -57,16 +59,22 @@ const permission = {
     },
     actions: {
         GenerateRoutes({ commit }, data) {
+            console.log(data);
             return new Promise(resolve => {
-                const { roles } = data
+                const { roles } = data;
                 let accessedRouters, defaultOpeneds = [];
-                accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-                accessedRouters = deleteEmpty(accessedRouters)
+                accessedRouters = roles;
+                console.log('roles',roles);
+                console.dir(roles);
+                console.log('accessedRouters',accessedRouters);
+                // accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+                // accessedRouters = deleteEmpty(accessedRouters)
 
                 for (const item of accessedRouters) {
-                    if (item.defaultOpen) {
-                        defaultOpeneds.push(item.name)
-                    }
+                    console.log(item);
+                    // if (item.defaultOpen) {
+                    //     defaultOpeneds.push(item.name)
+                    // }
                 }
                 console.log('设置addRouters', accessedRouters);
 

@@ -32,7 +32,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     //  import { isWscnEmail } from 'utils/validate';
     import socialSign from './socialsignin';
 
@@ -56,8 +56,8 @@
             };
             return {
                 loginForm: {
-                    username: 'lxx',
-                    password: '123456'
+                    username: 'admin',
+                    password: '123'
                 },
                 loginRules: {
                     username: [
@@ -76,24 +76,19 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true;
-                        console.log(this.$refs.loginForm);
-                        const loginData = this.loginForm;
-                        console.log("qqqqq,",loginData);
-                        this.$store.dispatch('Login', loginData).then(res => {
+                        this.$store.dispatch('Login', this.loginForm).then(res => {
                             console.log('登录接口成功', res);
-                            const roles = res.data.roleList;
-                            this.$store.dispatch('GenerateRoutes', {roles}).then(() => { // 生成可访问的路由表
-                                this.$router.addRoutes(this.$store.getters.addRouters) // 动态添加可访问路由表
-                                console.log('登录后跳转到首页')
-                                this.loading = false;
-                                this.$router.push({path: '/'});
-                                this.showDialog = true;
-                            })
-
-//              console.log('登录后跳转到首页')
-//              this.loading = false;
-//              this.$router.push({ path: '/' });
-//                // this.showDialog = true;
+                            this.$store.dispatch('GetInfo').then(res => {
+                                console.log(res);
+                                const roles = res.ret.menus;
+                                this.$store.dispatch('GenerateRoutes', {roles}).then(() => { // 生成可访问的路由表
+                                    this.$router.addRoutes(this.$store.getters.addRouters) // 动态添加可访问路由表
+                                    console.log('登录后跳转到首页')
+                                    this.loading = false;
+                                    this.$router.push({path: '/'});
+                                    this.showDialog = true;
+                                });
+                            });
                         }).catch(err => {
                             console.log(err);
                             this.$message.error(err.errmsg);

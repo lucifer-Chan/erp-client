@@ -1,4 +1,4 @@
-import Api from 'api/preserve';
+import Api from 'api/userInfo';
 import Cookies from 'js-cookie';
 
 const user = {
@@ -63,31 +63,31 @@ const user = {
         // 获取用户信息
         GetInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
-                let response ={
-                    data :{
-                        name:'admin',
-                        permissionList:'SUPER_ADMIN',
-                        roleList:'waitTrial'
-                    },
-                }
-                commit('SET_USER_INFO', response.data);
-                resolve(response);
-                // Api.getInfo().then(response => {
+                //let response ={
+                //    data :{
+                //        name:'admin',
+                //        permissionList:'SUPER_ADMIN',
+                //        roleList:'waitTrial'
+                //    },
+                //}
+                //commit('SET_USER_INFO', response.data);
+                //resolve(response);
+                 Api.getUserRoles().then(response => {
 
-                //     if (!response.success) {
-                //         commit('SET_USER_INFO');
-                //         reject(response);
-                //     } else {
-                //         const data = response.data;
-                //         // console.log(data)
-                //         commit('SET_USER_INFO', data);
-                //         resolve(response);
-                //     }
-                // }).catch(error => {
-                //     // console.log(error)
-                //     commit('SET_USER_INFO');
-                //     reject(error);
-                // });
+                     if (!response.success) {
+                         commit('SET_USER_INFO');
+                         reject(response);
+                     } else {
+                         const data = response.ret;
+                         console.log(data)
+                         commit('SET_USER_INFO', data);
+                         resolve(response);
+                     }
+                 }).catch(error => {
+                     // console.log(error)
+                     commit('SET_USER_INFO');
+                     reject(error);
+                 });
             });
         },
 
